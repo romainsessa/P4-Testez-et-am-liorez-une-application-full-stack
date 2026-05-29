@@ -1,6 +1,8 @@
 package com.openclassrooms.starterjwt.services;
 
+import com.openclassrooms.starterjwt.dto.UserDto;
 import com.openclassrooms.starterjwt.exception.BadRequestException;
+import com.openclassrooms.starterjwt.mapper.UserMapper;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.payload.request.SignupRequest;
 import com.openclassrooms.starterjwt.repository.UserRepository;
@@ -13,18 +15,20 @@ public class UserService {
 	
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     public void delete(Long id) {
         this.userRepository.deleteById(id);
     }
 
-    public User findById(Long id) {
-        return this.userRepository.findById(id).orElse(null);
+    public UserDto findById(Long id) {
+        return this.userMapper.toDto(this.userRepository.findById(id).orElse(null));
     }
     
     public void create(SignupRequest signUpRequest) {
