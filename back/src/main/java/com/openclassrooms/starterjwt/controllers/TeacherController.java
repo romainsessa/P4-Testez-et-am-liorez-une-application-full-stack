@@ -20,14 +20,9 @@ public class TeacherController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<TeacherDto> findById(@PathVariable("id") String id) {
+	public ResponseEntity<TeacherDto> findById(@PathVariable String id) {
 		try {
 			TeacherDto teacherDto = this.teacherService.findById(Long.valueOf(id));
-
-			if (teacherDto == null) {
-				return ResponseEntity.notFound().build();
-			}
-
 			return ResponseEntity.ok().body(teacherDto);
 		} catch (NumberFormatException e) {
 			return ResponseEntity.badRequest().build();
