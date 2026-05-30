@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-detail',
+  standalone: true,
   imports: [CommonModule, MaterialModule],
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']

@@ -10,6 +10,7 @@ import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-list',
+  standalone: true,
   imports: [CommonModule, MaterialModule, RouterModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']

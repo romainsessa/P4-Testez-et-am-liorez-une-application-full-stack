@@ -8,6 +8,7 @@ import {MaterialModule} from "./shared/material.module";
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [CommonModule, MaterialModule, RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [CommonModule, MaterialModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']

@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-form',
+  standalone: true,
   imports: [CommonModule, MaterialModule],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']

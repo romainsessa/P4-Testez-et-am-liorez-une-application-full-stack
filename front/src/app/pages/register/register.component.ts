@@ -8,6 +8,7 @@ import { CommonModule } from "@angular/common";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [CommonModule, MaterialModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
