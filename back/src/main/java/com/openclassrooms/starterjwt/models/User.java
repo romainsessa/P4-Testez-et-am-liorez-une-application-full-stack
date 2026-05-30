@@ -65,8 +65,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @NonNull
-    private boolean admin;
+    @Builder.Default
+    private boolean admin = false;
 
     @CreatedDate
     @Column(updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

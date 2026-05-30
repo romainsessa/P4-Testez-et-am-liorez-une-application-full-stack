@@ -42,7 +42,7 @@ public class UserService {
 		}
 		// Create new user's account
 		User user = new User(signUpRequest.getEmail(), signUpRequest.getLastName(), signUpRequest.getFirstName(),
-				passwordEncoder.encode(signUpRequest.getPassword()), false);
+				passwordEncoder.encode(signUpRequest.getPassword()));
 		userRepository.save(user);
 	}
 }

@@ -3,6 +3,8 @@ package com.openclassrooms.starterjwt.mapper;
 import com.openclassrooms.starterjwt.dto.SessionDto;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.repository.TeacherRepository;
+import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.services.TeacherService;
 import com.openclassrooms.starterjwt.services.UserService;
 import org.mapstruct.Mapper;
@@ -23,12 +25,16 @@ public abstract class SessionMapper implements EntityMapper<SessionDto, Session>
     @Autowired
     TeacherService teacherService;
     @Autowired
+    TeacherRepository teacherRepository;
+    @Autowired
     UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     @Mappings({
             @Mapping(source = "description", target = "description"),
-            @Mapping(target = "teacher", expression = "java(sessionDto.getTeacher_id() != null ? this.teacherService.findById(sessionDto.getTeacher_id()) : null)"),
-            @Mapping(target = "users", expression = "java(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream().map(user_id -> { User user = this.userService.findById(user_id); if (user != null) { return user; } return null; }).collect(Collectors.toList()))"),
+            @Mapping(target = "teacher", expression = "java(sessionDto.getTeacher_id() != null ? this.teacherRepository.findById(sessionDto.getTeacher_id()).orElse(null) : null)"),
+            @Mapping(target = "users", expression = "java(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream().map(user_id -> { User user = this.userRepository.findById(user_id).orElse(null); if (user != null) { return user; } return null; }).collect(Collectors.toList()))"),
     })
     public abstract Session toEntity(SessionDto sessionDto);
 
