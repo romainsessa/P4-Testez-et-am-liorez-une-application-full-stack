@@ -5,7 +5,6 @@ import com.openclassrooms.starterjwt.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,9 +46,9 @@ public class UserController {
                 return ResponseEntity.notFound().build();
             }
 
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String userDetails = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            if (!Objects.equals(userDetails.getUsername(), userDto.getEmail())) {
+            if (!Objects.equals(userDetails, userDto.getEmail())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
