@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,6 +32,7 @@ export class DetailComponent implements OnInit {
   private sessionApiService = inject(SessionApiService);
   private teacherService = inject(TeacherService);
   private matSnackBar = inject(MatSnackBar);
+  private destroyRef = inject(DestroyRef);
   private router = inject(Router);
 
   constructor() {
@@ -51,7 +52,7 @@ export class DetailComponent implements OnInit {
   public delete(): void {
     this.sessionApiService
       .delete(this.sessionId)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((_: void) => {
           this.matSnackBar.open('Session deleted !', 'Close', { duration: 3000 });
           this.router.navigate(['sessions']);
@@ -61,20 +62,20 @@ export class DetailComponent implements OnInit {
 
   public participate(): void {
     this.sessionApiService.participate(this.sessionId, this.userId)
-      .pipe(takeUntilDestroyed())  
+      .pipe(takeUntilDestroyed(this.destroyRef))  
       .subscribe(_ => this.fetchSession());
   }
 
   public unParticipate(): void {
     this.sessionApiService.unParticipate(this.sessionId, this.userId)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(_ => this.fetchSession());
   }
 
   private fetchSession(): void {
     this.sessionApiService
       .detail(this.sessionId)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((session: Session) => {
         this.session = session;
         this.isParticipate = session.users.some(u => u === this.sessionService.sessionInformation!.id);
