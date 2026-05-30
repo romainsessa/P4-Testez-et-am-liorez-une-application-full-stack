@@ -16,46 +16,37 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserService userService;
+	private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable String id) {
-        try {
-            UserDto userDto = this.userService.findById(Long.valueOf(id));
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDto> findById(@PathVariable String id) {
+		try {
+			UserDto userDto = this.userService.findById(Long.valueOf(id));
+			return ResponseEntity.ok().body(userDto);
+		} catch (NumberFormatException e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 
-            if (userDto == null) {
-                return ResponseEntity.notFound().build();
-            }
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> save(@PathVariable String id) {
+		try {
+			UserDto userDto = this.userService.findById(Long.valueOf(id));
 
-            return ResponseEntity.ok().body(userDto);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+			String userDetails = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> save(@PathVariable String id) {
-        try {
-        	UserDto userDto = this.userService.findById(Long.valueOf(id));
+			if (!Objects.equals(userDetails, userDto.getEmail())) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			}
 
-            if (userDto == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            String userDetails = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (!Objects.equals(userDetails, userDto.getEmail())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-
-            this.userService.delete(Long.parseLong(id));
-            return ResponseEntity.ok().build();
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+			this.userService.delete(Long.parseLong(id));
+			return ResponseEntity.ok().build();
+		} catch (NumberFormatException e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 }

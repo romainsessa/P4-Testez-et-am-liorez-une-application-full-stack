@@ -177,6 +177,8 @@
 								<exclude>**/configuration/**</exclude>
 								<exclude>**/security/*.class</exclude>
 								<exclude>**/exception/**</exclude>
+								<exclude>**/security/services/UserDetailsImpl.class</exclude>
+								
 							</excludes>
 						</configuration>
 

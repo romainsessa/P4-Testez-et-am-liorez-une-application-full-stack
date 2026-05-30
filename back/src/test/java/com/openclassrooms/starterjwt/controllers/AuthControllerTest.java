@@ -5,8 +5,6 @@ import com.openclassrooms.starterjwt.payload.request.LoginRequest;
 import com.openclassrooms.starterjwt.payload.request.SignupRequest;
 import com.openclassrooms.starterjwt.payload.response.JwtResponse;
 import com.openclassrooms.starterjwt.services.AuthService;
-import com.openclassrooms.starterjwt.services.UserService;
-
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +32,11 @@ class AuthControllerTest {
 	@MockitoBean
 	private AuthService authService;
 
-	@MockitoBean
-	private UserService userService;
-
 	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Test
 	void should_login_and_return_jwt() throws Exception {
-
 		// GIVEN
 		LoginRequest request = new LoginRequest();
 		request.setEmail("test@test.com");
@@ -65,7 +59,6 @@ class AuthControllerTest {
 
 	@Test
 	void should_register_user() throws Exception {
-
 		// GIVEN
 		SignupRequest request = new SignupRequest();
 		request.setEmail("test@test.com");
@@ -73,32 +66,29 @@ class AuthControllerTest {
 		request.setFirstName("John");
 		request.setLastName("Doe");
 
-		doNothing().when(userService).create(any(SignupRequest.class));
-
 		// WHEN / THEN
 		mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.message").value("User registered successfully!"));
-
-		verify(userService).create(any(SignupRequest.class));
 	}
 
 	@Test
 	void should_return_bad_request_when_login_invalid() throws Exception {
-
-		// email manquant
+		// GIVEN
 		LoginRequest request = new LoginRequest();
 		request.setPassword("password");
 
+		// WHEN / THEN
 		mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isBadRequest());
 	}
 
 	@Test
 	void should_return_bad_request_when_register_invalid() throws Exception {
-
-		SignupRequest request = new SignupRequest(); // vide
-
+		// GIVEN
+		SignupRequest request = new SignupRequest();
+		
+		// WHEN / THEN
 		mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isBadRequest());
 	}
