@@ -5,6 +5,7 @@ import { AuthService } from '../../core/service/auth.service';
 import { RegisterRequest } from '../../core/models/registerRequest.interface';
 import { MaterialModule } from "../../shared/material.module";
 import { CommonModule } from "@angular/common";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-register',
   imports: [CommonModule, MaterialModule],
@@ -54,7 +55,9 @@ export class RegisterComponent {
 
   public submit(): void {
     const registerRequest = this.form.value as RegisterRequest;
-    this.authService.register(registerRequest).subscribe({
+    this.authService.register(registerRequest)
+    .pipe(takeUntilDestroyed())
+    .subscribe({
         next: (_: void) => this.router.navigate(['/login']),
         error: _ => this.onError = true,
       }

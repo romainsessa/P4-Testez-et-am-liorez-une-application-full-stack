@@ -7,6 +7,7 @@ import { LoginRequest } from '../../core/models/loginRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
 import {MaterialModule} from "../../shared/material.module";
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
@@ -42,7 +43,9 @@ export class LoginComponent {
 
   public submit(): void {
     const loginRequest = this.form.value as LoginRequest;
-    this.authService.login(loginRequest).subscribe({
+    this.authService.login(loginRequest)
+    .pipe(takeUntilDestroyed())
+    .subscribe({
       next: (response: SessionInformation) => {
         this.sessionService.logIn(response);
         this.router.navigate(['/sessions']);
