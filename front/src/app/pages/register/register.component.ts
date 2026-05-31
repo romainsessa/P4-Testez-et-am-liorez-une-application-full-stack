@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
@@ -18,6 +18,7 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   public onError = false;
+  private destroyRef = inject(DestroyRef);
 
   public form = this.fb.group({
     email: [
@@ -57,7 +58,7 @@ export class RegisterComponent {
   public submit(): void {
     const registerRequest = this.form.value as RegisterRequest;
     this.authService.register(registerRequest)
-    .pipe(takeUntilDestroyed())
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
         next: (_: void) => this.router.navigate(['/login']),
         error: _ => this.onError = true,

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionInformation } from 'src/app/core/models/sessionInformation.interface';
@@ -21,6 +21,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private sessionService = inject(SessionService);
+  private destroyRef = inject(DestroyRef);
 
   public hide = true;
   public onError = false;
@@ -45,7 +46,7 @@ export class LoginComponent {
   public submit(): void {
     const loginRequest = this.form.value as LoginRequest;
     this.authService.login(loginRequest)
-    .pipe(takeUntilDestroyed())
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: (response: SessionInformation) => {
         this.sessionService.logIn(response);
