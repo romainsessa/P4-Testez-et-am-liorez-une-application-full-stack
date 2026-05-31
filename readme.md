@@ -22,48 +22,62 @@ Le projet est composé de :
 
 ---
 
+## Lancer l'application
+
+### Back
+```bash
+mvn spring-boot:run
+```
+
+### Front
+```bash
+npm install
+npm run start
+```
+---
+
 ## Lancer les tests
 
 ### Tests Backend (Java)
 
 Lancer les tests :
-
+```bash
 mvn test
-
-Générer le rapport de couverture :
-
-mvn testCoverage
+```
 
 Rapport disponible dans :
 
-target/site/jacoco/index.html
+- target/site/jacoco/index.html
 
 ---
 
 ### Tests Frontend (Angular - Jest)
 
 Lancer les tests avec couverture :
-
+```bash
 npm run test
+```
 
 Rapport disponible dans :
 
-coverage/jest/index.html
+- coverage/jest/index.html
 
 ---
 
 ### 🌐 Tests End-to-End (Cypress)
 
 Lancer les tests E2E avec couverture :
-
+```bash
 npm run e2e:ci
+```
 
 Puis :
-
+```bash
 npm run e2e:coverage
+```
 
 Rapport disponible dans :
 
-coverage/lcov-report/index.html
+- coverage/lcov-report/index.html
 
 ---
