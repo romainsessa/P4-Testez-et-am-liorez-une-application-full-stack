@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 import { expect } from '@jest/globals';
 
 import { DetailComponent } from './detail.component';
 import { SessionService } from '../../../../core/service/session.service';
 import { SessionApiService } from '../../../../core/service/session-api.service';
 import { TeacherService } from '../../../../core/service/teacher.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('DetailComponent (unit)', () => {
@@ -65,10 +64,10 @@ describe('DetailComponent (unit)', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        DetailComponent,
-        RouterTestingModule
+        DetailComponent
       ],
       providers: [
+        provideRouter([]),
         { provide: SessionService, useValue: mockSessionService },
         { provide: SessionApiService, useValue: mockSessionApiService },
         { provide: TeacherService, useValue: mockTeacherService },

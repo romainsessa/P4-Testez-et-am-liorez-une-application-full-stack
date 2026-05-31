@@ -1,12 +1,13 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormComponent } from './form.component';
 import { of, throwError } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 import { SessionService } from 'src/app/core/service/session.service';
 import { SessionApiService } from 'src/app/core/service/session-api.service';
 import { TeacherService } from 'src/app/core/service/teacher.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('FormComponent (unit)', () => {
   let component: FormComponent;
@@ -45,8 +46,9 @@ describe('FormComponent (unit)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormComponent, RouterTestingModule],
+      imports: [FormComponent],
       providers: [
+        provideRouter([]),
         { provide: SessionService, useValue: mockSessionService },
         { provide: SessionApiService, useValue: mockSessionApiService },
         { provide: TeacherService, useValue: mockTeacherService },
@@ -152,8 +154,11 @@ describe('FormComponent (unit)', () => {
     TestBed.resetTestingModule();
 
     TestBed.configureTestingModule({
-      imports: [FormComponent, RouterTestingModule],
+      imports: [FormComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
         { provide: SessionService, useValue: nonAdminService },
         { provide: SessionApiService, useValue: mockSessionApiService },
         { provide: TeacherService, useValue: mockTeacherService },
